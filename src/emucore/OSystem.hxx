@@ -30,6 +30,7 @@ class TimerManager;
 class HighScoresManager;
 class EmulationWorker;
 class AudioSettings;
+class RawStream;
 #ifdef CHEATCODE_SUPPORT
   class CheatManager;
 #endif
@@ -265,6 +266,13 @@ class OSystem
     */
     JPGLibrary& jpg() const { return *myJPGLib; }
 #endif
+
+    /**
+      Get the raw picture/sound stream ('-rawstream'), if one is open.
+
+      @return The raw stream, or nullptr
+    */
+    RawStream* rawStream() const { return myRawStream.get(); }
 
     /**
       Set all config file paths for the OSystem.
@@ -530,6 +538,10 @@ class OSystem
 
     // Pointer to the PropertiesSet object
     unique_ptr<PropertiesSet> myPropSet;
+
+    // Raw picture/sound output; declared before the console so that it
+    // outlives the TIA that writes to it
+    unique_ptr<RawStream> myRawStream;
 
     // Pointer to the (currently defined) Console object
     unique_ptr<Console> myConsole;

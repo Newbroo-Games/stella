@@ -19,6 +19,7 @@
 #define TIA_AUDIO_HXX
 
 class AudioQueue;
+class RawStream;
 
 #include "bspf.hxx"
 #include "AudioChannel.hxx"
@@ -44,6 +45,11 @@ class Audio : public Serializable
       myRewindMode = enable;
     #endif
     }
+
+    /**
+      Send every sample, as generated, to the raw stream (nullptr to stop).
+    */
+    void setRawStream(RawStream* stream);
 
     FORCE_INLINE void tick();
 
@@ -78,6 +84,8 @@ class Audio : public Serializable
 
     Int16* myCurrentFragment{nullptr};
     uInt32 mySampleIndex{0};
+
+    RawStream* myRawStream{nullptr};
   #ifdef GUI_SUPPORT
     bool myRewindMode{false};
     mutable ByteArray mySamples;

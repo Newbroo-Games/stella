@@ -60,6 +60,7 @@
 #endif
 #include "Version.hxx"
 #include "TIA.hxx"
+#include "RawStream.hxx"
 #include "DispatchResult.hxx"
 #include "EmulationWorker.hxx"
 #include "AudioSettings.hxx"
@@ -462,6 +463,15 @@ string OSystem::createConsole(const FSNode& rom, string_view md5sum, bool newrom
 
   myEventHandler->handleConsoleStartupEvents();
 
+  // One raw stream for the whole run; it must exist before the framebuffer
+  // is created, since that is when the palette is set
+  if(!myRawStream && !mySettings->getString("rawstream").empty())
+  {
+    myRawStream = make_unique<RawStream>(mySettings->getString("rawstream"));
+    if(!myRawStream->isOpen())
+      myRawStream.reset();
+  }
+
   try
   {
     closeConsole();
@@ -493,6 +503,12 @@ string OSystem::createConsole(const FSNode& rom, string_view md5sum, bool newrom
       return "ERROR: Couldn't create framebuffer for console";
     }
     myConsole->initializeAudio();
+
+    if(myRawStream)
+    {
+      myRawStream->setRom(myRomFile.getName(), myRomMD5);
+      myConsole->tia().setRawStream(myRawStream.get());
+    }
 
     const string saveOnExit = settings().getString("saveonexit");
     const bool devSettings = settings().getBool("dev.settings");
