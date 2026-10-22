@@ -36,7 +36,7 @@ versions may add new chunks, and may add fields to the end of a payload.
 |---|---|---|
 | `HEAD` | Before the first frame, and again when the ROM or the TV type changes | Format and timing, see below |
 | `PALT` | After every `HEAD`, and whenever the palette changes | 256 x (R, G, B) bytes, indexed by the TIA color value |
-| `AUDI` | Before each `FRAM` | The audio samples since the previous `FRAM` |
+| `AUDI` | Before each `FRAM`, and before a `JUMP` | The audio samples since the previous `FRAM` |
 | `RAM ` | Just before each `FRAM` | The console's 128 bytes of RAM as the frame ended |
 | `FRAM` | Every emulated frame | One frame of TIA color values |
 | `JUMP` | Reset, state load (including rewind), ROM load | 1 byte: why |
@@ -98,9 +98,11 @@ when Stella changes its display window. A reader that needs a fixed size
 (video encoders do) should choose one and pad or crop.
 
 Each frame's audio is the `AUDI` chunk just before it, so picture and sound
-never drift: for an unbroken run of frames, a frame's sample count is twice
-its scanline count, and its cycle count is 76 x its scanlines past the
-previous frame's.
+never drift. Once a game's frames are steady, each ending at the same point
+of a scanline, a frame's sample count is twice its scanline count, and its
+cycle count is 76 x its scanlines past the previous frame's. In the first
+frames after power-on or a reset, before the game's VSYNC settles, these
+counts can disagree with each other.
 
 ### `JUMP`
 
@@ -110,7 +112,10 @@ previous frame's.
 | 1 | State loaded (save state, rewind, Time Machine) |
 | 2 | ROM loaded or reloaded (a `HEAD` follows) |
 
-Emulated time runs on from frame to frame except across a `JUMP`.
+Emulated time runs on from frame to frame except across a `JUMP`. The samples
+made since the last `FRAM` are written as an `AUDI` chunk just before the
+`JUMP`, so an `AUDI` is not always followed by a `FRAM`; those samples belong
+to the time before the jump.
 
 ## Where the data comes from
 
