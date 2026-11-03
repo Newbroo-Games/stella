@@ -31,6 +31,7 @@ class HighScoresManager;
 class EmulationWorker;
 class AudioSettings;
 class RawStream;
+class InputScript;
 #ifdef CHEATCODE_SUPPORT
   class CheatManager;
 #endif
@@ -273,6 +274,13 @@ class OSystem
       @return The raw stream, or nullptr
     */
     RawStream* rawStream() const { return myRawStream.get(); }
+
+    /**
+      Get the input script ('-inputscript'), if there is one.
+
+      @return The input script, or nullptr
+    */
+    InputScript* inputScript() const { return myInputScript.get(); }
 
     /**
       Set all config file paths for the OSystem.
@@ -542,6 +550,7 @@ class OSystem
     // Raw picture/sound output; declared before the console so that it
     // outlives the TIA that writes to it
     unique_ptr<RawStream> myRawStream;
+    unique_ptr<InputScript> myInputScript;
 
     // Pointer to the (currently defined) Console object
     unique_ptr<Console> myConsole;

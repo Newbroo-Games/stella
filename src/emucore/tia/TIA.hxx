@@ -45,6 +45,7 @@
 class AudioQueue;
 class DispatchResult;
 class RawStream;
+class InputScript;
 
 /**
   This class is a device that emulates the Television Interface Adaptor
@@ -144,6 +145,12 @@ class TIA : public Device
       raw stream (nullptr to stop).
     */
     void setRawStream(RawStream* stream);
+
+    /**
+      Set the input script's next inputs at the end of every frame
+      (nullptr to stop).
+    */
+    void setInputScript(InputScript* script) { myInputScript = script; }
 
     /**
       Clear the configured frame manager and deteach the lifecycle callbacks.
@@ -857,6 +864,7 @@ class TIA : public Device
     Audio myAudio;
 
     RawStream* myRawStream{nullptr};
+    InputScript* myInputScript{nullptr};
 
     /**
      * The paddle readout circuits.

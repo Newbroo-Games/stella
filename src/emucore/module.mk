@@ -95,6 +95,7 @@ MODULE_OBJS := \
 	src/emucore/Props.o \
 	src/emucore/PropsSet.o \
 	src/emucore/RawStream.o \
+	src/emucore/InputScript.o \
 	src/emucore/QuadTari.o \
 	src/emucore/SaveKey.o \
 	src/emucore/Serializer.o \

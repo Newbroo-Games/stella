@@ -325,6 +325,7 @@ Settings::Settings()
 
   setTemporary("elf.dump", false);
   setTemporary("rawstream", "");
+  setTemporary("inputscript", "");
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -641,7 +642,9 @@ void Settings::usage()
     << "  -ssinterval   <number>       Number of seconds between snapshots in\n"
     << "                                continuous snapshot mode\n"
     << "  -rawstream    <path|->       Write every frame and audio sample, raw, to\n"
-    << "                                a file, pipe or stdout ('-')\n\n"
+    << "                                a file, pipe or stdout ('-')\n"
+    << "  -inputscript  <path>         Press and release the joysticks and switches\n"
+    << "                                at given frames, from a text file\n\n"
     << "  -saveonexit   <none|current| Automatically save state(s) when exiting\n"
     << "                 all>           emulation\n"
     << "  -autoslot     <0|1>          Automatically change to next save slot when\n"

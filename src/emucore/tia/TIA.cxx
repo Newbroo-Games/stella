@@ -23,6 +23,7 @@
 #include "TIAConstants.hxx"
 #include "AudioQueue.hxx"
 #include "RawStream.hxx"
+#include "InputScript.hxx"
 #include "DispatchResult.hxx"
 #include "PhosphorHandler.hxx"
 #include "Base.hxx"
@@ -1449,6 +1450,11 @@ void TIA::onFrameComplete()
                        myFrameManager->startLine(), myFrontBufferScanlines,
                        myFrameManager->frameCount(), mySystem->cycles(),
                        myTimingProvider(), mySystem->m6532().getRAM());
+
+  // The next frame's inputs, here so that they change on the same emulated
+  // cycle in every run, however fast Stella runs
+  if(myInputScript && !myIsLayoutDetector && myInputScript->frameDone())
+    mySystem->m6532().update();
 
   if(myAutoPhosphorEnabled)
   {

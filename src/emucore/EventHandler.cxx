@@ -18,6 +18,7 @@
 #include <sstream>
 
 #include "Logger.hxx"
+#include "InputScript.hxx"
 
 #include "Base.hxx"
 #include "Console.hxx"
@@ -272,6 +273,10 @@ void EventHandler::poll(uInt64 time)
   // related to emulation
   if(myState == EventHandlerState::EMULATION)
   {
+    // An input script's inputs, which a state change may have cleared
+    if(myOSystem.inputScript())
+      myOSystem.inputScript()->hold();
+
     myOSystem.console().riot().update();
 
     // Now check if the StateManager should be saving or loading state

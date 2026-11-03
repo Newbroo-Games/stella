@@ -61,6 +61,7 @@
 #include "Version.hxx"
 #include "TIA.hxx"
 #include "RawStream.hxx"
+#include "InputScript.hxx"
 #include "DispatchResult.hxx"
 #include "EmulationWorker.hxx"
 #include "AudioSettings.hxx"
@@ -472,6 +473,20 @@ string OSystem::createConsole(const FSNode& rom, string_view md5sum, bool newrom
       myRawStream.reset();
   }
 
+  // One input script for the whole run; a bad one stops Stella
+  if(!myInputScript && !mySettings->getString("inputscript").empty())
+  {
+    myInputScript = make_unique<InputScript>(myEventHandler->event(),
+                                             mySettings->getString("inputscript"));
+    if(!myInputScript->error().empty())
+    {
+      buf << "ERROR: " << myInputScript->error();
+      Logger::error(buf.view());
+      myInputScript.reset();
+      return buf.str();
+    }
+  }
+
   try
   {
     closeConsole();
@@ -508,6 +523,13 @@ string OSystem::createConsole(const FSNode& rom, string_view md5sum, bool newrom
     {
       myRawStream->setRom(myRomFile.getName(), myRomMD5);
       myConsole->tia().setRawStream(myRawStream.get());
+    }
+    if(myInputScript)
+    {
+      // After the event handler's reset, which clears the inputs
+      myInputScript->start();
+      myConsole->riot().update();
+      myConsole->tia().setInputScript(myInputScript.get());
     }
 
     const string saveOnExit = settings().getString("saveonexit");

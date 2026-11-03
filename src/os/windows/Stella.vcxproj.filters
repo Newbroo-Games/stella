@@ -288,6 +288,9 @@
     <ClCompile Include="..\..\emucore\RawStream.cxx">
       <Filter>Source Files\emucore</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\emucore\InputScript.cxx">
+      <Filter>Source Files\emucore</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\emucore\Paddles.cxx">
       <Filter>Source Files\emucore</Filter>
     </ClCompile>
@@ -1422,6 +1425,9 @@
       <Filter>Header Files\emucore</Filter>
     </ClInclude>
     <ClInclude Include="..\..\emucore\RawStream.hxx">
+      <Filter>Header Files\emucore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\emucore\InputScript.hxx">
       <Filter>Header Files\emucore</Filter>
     </ClInclude>
     <ClInclude Include="..\..\emucore\Paddles.hxx">
