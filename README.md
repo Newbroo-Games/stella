@@ -10,9 +10,9 @@ Added to 7.0c:
 
 | Addition | What it is | Spec |
 |---|---|---|
-| 3PO | 3E+ with an outer bank register: up to 16MB of ROM, every 3E+ game runs unchanged | [docs/3po.md](docs/3po.md) |
-| 3PD | 3PO plus DPC-style data fetchers and three music voices (new, emulated only so far) | [docs/3pd.md](docs/3pd.md) |
-| 4KP | 4K ROM banks and 32K of paged RAM, up to 1MB of ROM | [docs/4kp.md](docs/4kp.md) |
+| 3PO | 3E+ with an outer bank register: up to 16MB of ROM, every 3E+ game runs unchanged | coming |
+| 3PD | 3PO plus DPC-style data fetchers and three music voices | coming |
+| 4KP | 4K ROM banks and 32K of paged RAM, up to 1MB of ROM | coming |
 | `-rawstream <file\|->` | every frame, audio sample and the console RAM, raw, for outside tools | [docs/rawstream.md](docs/rawstream.md) |
 | `-inputscript <file>` | joystick and console switch input at given frames, the same in every run | `src/emucore/InputScript.hxx` |
 | 3EX fix | 3EX RAM banks at 64K and above no longer land on lower banks (stella-emu/stella#1177) | |
