@@ -89,10 +89,13 @@ Bankswitch::BSList = {{
   { "3E"      , "3E (Tigervision, 32K RAM)"   },
   { "3EX"     , "3EX (Tigervision, 256K RAM)" },
   { "3E+"     , "3E+ (TJ modified 3E)"        },
+  { "3PO"     , "3PO (Newbroo 3E+, 16MB)"     },
+  { "3PD"     , "3PD (Newbroo 3PO + DPC)"     },
   { "3F"      , "3F (512K Tigervision)"       },
   { "4A50"    , "4A50 (64K 4A50 + RAM)"       },
   { "4K"      , "4K (4K Atari)"               },
   { "4KSC"    , "4KSC (CPUWIZ 4K + RAM)"      },
+  { "4KP"     , "4KP (Newbroo 512K + 32K RAM)" },
   { "AR"      , "AR (Supercharger)"           },
   { "BF"      , "BF (CPUWIZ 256K)"            },
   { "BFSC"    , "BFSC (CPUWIZ 256K + RAM)"    },
@@ -156,10 +159,13 @@ Bankswitch::Sizes = {{
   {    8_KB, 512_KB }, // _3E
   {    8_KB, 512_KB }, // _3EX
   {    8_KB,  64_KB }, // _3EP
+  {    8_KB, 16384_KB }, // _3PO
+  {    8_KB, 16384_KB }, // _3PD
   {    8_KB, 512_KB }, // _3F
   {   64_KB,  64_KB }, // _4A50
   {    4_KB,   4_KB }, // _4K
   {    4_KB,   4_KB }, // _4KSC
+  {    8_KB, 1024_KB }, // _4KP
   {    6_KB,  33_KB }, // _AR
   {  256_KB, 256_KB }, // _BF
   {  256_KB, 256_KB }, // _BFSC
@@ -240,12 +246,15 @@ Bankswitch::ExtensionMap Bankswitch::ourExtensions = {
   { "3EX"   , Bankswitch::Type::_3EX    },
   { "3EP"   , Bankswitch::Type::_3EP    },
   { "3E+"   , Bankswitch::Type::_3EP    },
+  { "3PO"   , Bankswitch::Type::_3PO    },
+  { "3PD"   , Bankswitch::Type::_3PD    },
   { "3F"    , Bankswitch::Type::_3F     },
   { "4A5"   , Bankswitch::Type::_4A50   },
   { "4A50"  , Bankswitch::Type::_4A50   },
   { "4K"    , Bankswitch::Type::_4K     },
   { "4KS"   , Bankswitch::Type::_4KSC   },
   { "4KSC"  , Bankswitch::Type::_4KSC   },
+  { "4KP"   , Bankswitch::Type::_4KP    },
   { "AR"    , Bankswitch::Type::_AR     },
   { "BF"    , Bankswitch::Type::_BF     },
   { "BFS"   , Bankswitch::Type::_BFSC   },
@@ -315,11 +324,14 @@ Bankswitch::NameToTypeMap Bankswitch::ourNameToTypes = {
   { "2K"      , Bankswitch::Type::_2K     },
   { "3E"      , Bankswitch::Type::_3E     },
   { "3E+"     , Bankswitch::Type::_3EP    },
+  { "3PO"     , Bankswitch::Type::_3PO    },
+  { "3PD"     , Bankswitch::Type::_3PD    },
   { "3EX"     , Bankswitch::Type::_3EX    },
   { "3F"      , Bankswitch::Type::_3F     },
   { "4A50"    , Bankswitch::Type::_4A50   },
   { "4K"      , Bankswitch::Type::_4K     },
   { "4KSC"    , Bankswitch::Type::_4KSC   },
+  { "4KP"     , Bankswitch::Type::_4KP    },
   { "AR"      , Bankswitch::Type::_AR     },
   { "BF"      , Bankswitch::Type::_BF     },
   { "BFSC"    , Bankswitch::Type::_BFSC   },

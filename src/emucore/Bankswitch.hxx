@@ -39,8 +39,8 @@ class Bankswitch
     // Currently supported bankswitch schemes
     enum class Type: uInt8 {
       _AUTO,  _03E0,  _0840,   _0FA0,  _2IN1, _4IN1, _8IN1, _16IN1,
-      _32IN1, _64IN1, _128IN1, _2K,    _3E,   _3EX,  _3EP,  _3F,
-      _4A50,  _4K,    _4KSC,   _AR,    _BF,   _BFSC, _BUS,  _CDF,
+      _32IN1, _64IN1, _128IN1, _2K,    _3E,   _3EX,  _3EP,  _3PO,  _3PD,  _3F,
+      _4A50,  _4K,    _4KSC,   _4KP,   _AR,    _BF,   _BFSC, _BUS,  _CDF,
       _CM,    _CTY,   _CV,     _DF,    _DFSC, _DPC,  _DPCP, _E0,
       _E7,    _EF,    _EFSC,   _ELF,   _F0,    _F4,  _F4SC, _F6,  
       _F6SC,  _F8,    _F8SC,   _FA,    _FA2,   _FC,  _FE,   _GL,   

@@ -16,10 +16,13 @@ MODULE_OBJS := \
 	src/emucore/Cart3E.o \
 	src/emucore/Cart3EPlus.o \
 	src/emucore/Cart3EX.o \
+	src/emucore/Cart3PO.o \
+	src/emucore/Cart3PD.o \
 	src/emucore/Cart3F.o \
 	src/emucore/Cart4A50.o \
 	src/emucore/Cart4K.o \
 	src/emucore/Cart4KSC.o \
+	src/emucore/Cart4KP.o \
 	src/emucore/CartAR.o \
 	src/emucore/CartBUS.o \
 	src/emucore/CartCDF.o \

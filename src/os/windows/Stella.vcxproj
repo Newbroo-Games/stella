@@ -472,6 +472,9 @@
     <ClCompile Include="..\..\debugger\gui\Cart3EPlusWidget.cxx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug-NoDebugger|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\debugger\gui\Cart3POWidget.cxx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug-NoDebugger|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\debugger\gui\Cart3EWidget.cxx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug-NoDebugger|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -665,8 +668,11 @@
     <ClCompile Include="..\..\emucore\Bankswitch.cxx" />
     <ClCompile Include="..\..\emucore\Cart03E0.cxx" />
     <ClCompile Include="..\..\emucore\Cart3EPlus.cxx" />
+    <ClCompile Include="..\..\emucore\Cart3PO.cxx" />
+    <ClCompile Include="..\..\emucore\Cart3PD.cxx" />
     <ClCompile Include="..\..\emucore\Cart3EX.cxx" />
     <ClCompile Include="..\..\emucore\Cart4KSC.cxx" />
+    <ClCompile Include="..\..\emucore\Cart4KP.cxx" />
     <ClCompile Include="..\..\emucore\CartARM.cxx" />
     <ClCompile Include="..\..\emucore\Cart0FA0.cxx" />
     <ClCompile Include="..\..\emucore\CartCreator.cxx" />
@@ -1451,6 +1457,9 @@
     <ClInclude Include="..\..\debugger\gui\Cart3EPlusWidget.hxx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug-NoDebugger|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\debugger\gui\Cart3POWidget.hxx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug-NoDebugger|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\debugger\gui\Cart3EWidget.hxx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug-NoDebugger|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -1642,8 +1651,11 @@
     <ClInclude Include="..\..\emucore\Bankswitch.hxx" />
     <ClInclude Include="..\..\emucore\Cart03E0.hxx" />
     <ClInclude Include="..\..\emucore\Cart3EPlus.hxx" />
+    <ClInclude Include="..\..\emucore\Cart3PO.hxx" />
+    <ClInclude Include="..\..\emucore\Cart3PD.hxx" />
     <ClInclude Include="..\..\emucore\Cart3EX.hxx" />
     <ClInclude Include="..\..\emucore\Cart4KSC.hxx" />
+    <ClInclude Include="..\..\emucore\Cart4KP.hxx" />
     <ClInclude Include="..\..\emucore\CartARM.hxx" />
     <ClInclude Include="..\..\emucore\Cart0FA0.hxx" />
     <ClInclude Include="..\..\emucore\CartCreator.hxx" />

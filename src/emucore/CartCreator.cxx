@@ -24,6 +24,8 @@
 #include "Cart3E.hxx"
 #include "Cart3EX.hxx"
 #include "Cart3EPlus.hxx"
+#include "Cart3PO.hxx"
+#include "Cart3PD.hxx"
 #include "Cart3F.hxx"
 #include "Cart4A50.hxx"
 #include "Cart4K.hxx"
@@ -42,6 +44,7 @@
 #include "CartDPCPlus.hxx"
 #include "CartE0.hxx"
 #include "CartE7.hxx"
+#include "Cart4KP.hxx"
 #include "CartEF.hxx"
 #include "CartEFSC.hxx"
 #include "CartF0.hxx"
@@ -243,10 +246,13 @@ CartCreator::createFromImage(const ByteBuffer& image, size_t size,
     case _3E:   return make_unique<Cartridge3E>(image, size, md5, settings);
     case _3EX:  return make_unique<Cartridge3EX>(image, size, md5, settings);
     case _3EP:  return make_unique<Cartridge3EPlus>(image, size, md5, settings);
+    case _3PO:  return make_unique<Cartridge3PO>(image, size, md5, settings);
+    case _3PD:  return make_unique<Cartridge3PD>(image, size, md5, settings);
     case _3F:   return make_unique<Cartridge3F>(image, size, md5, settings);
     case _4A50: return make_unique<Cartridge4A50>(image, size, md5, settings);
     case _4K:   return make_unique<Cartridge4K>(image, size, md5, settings);
     case _4KSC: return make_unique<Cartridge4KSC>(image, size, md5, settings);
+    case _4KP:  return make_unique<Cartridge4KP>(image, size, md5, settings);
     case _AR:   return make_unique<CartridgeAR>(image, size, md5, settings);
     case _BF:   return make_unique<CartridgeBF>(image, size, md5, settings);
     case _BFSC: return make_unique<CartridgeBFSC>(image, size, md5, settings);

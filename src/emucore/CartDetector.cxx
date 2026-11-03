@@ -251,7 +251,12 @@ Bankswitch::Type CartDetector::autodetectType(const ByteBuffer& image, size_t si
   }
 
   // Variable sized ROM formats are independent of image size and come last
-  if(isProbably3EPlus(image, size))
+  // (3PD, then 3PO, first: a 3PD ROM may carry 3PO's 'C3PO' and 3E+'s 'TJ3E' too)
+  if(isProbably3PD(image, size))
+    type = Bankswitch::Type::_3PD;
+  else if(isProbably3PO(image, size))
+    type = Bankswitch::Type::_3PO;
+  else if(isProbably3EPlus(image, size))
     type = Bankswitch::Type::_3EP;
   else if(isProbablyMDM(image, size))
     type = Bankswitch::Type::_MDM;
@@ -417,6 +422,22 @@ bool CartDetector::isProbably3EPlus(const ByteBuffer& image, size_t size)
   // 3E+ cart is identified key 'TJ3E' in the ROM
   static constexpr uInt8 tj3e[] = { 'T', 'J', '3', 'E' };
   return searchForBytes(image, size, tj3e, 4);
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bool CartDetector::isProbably3PO(const ByteBuffer& image, size_t size)
+{
+  // 3PO cart is identified by key 'C3PO' in the ROM
+  static constexpr uInt8 key[] = { 'C', '3', 'P', 'O' };
+  return searchForBytes(image, size, key, 4);
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bool CartDetector::isProbably3PD(const ByteBuffer& image, size_t size)
+{
+  // 3PD (working name) is identified by key '3PD1' in the ROM
+  static constexpr uInt8 key[] = { '3', 'P', 'D', '1' };
+  return searchForBytes(image, size, key, 4);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

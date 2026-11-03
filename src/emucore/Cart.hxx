@@ -53,8 +53,12 @@ class Cartridge : public Device
     */
     using messageCallback = std::function<void(const string&)>;
 
-    // Maximum size of a ROM cart that Stella can support
-    static constexpr size_t maxSize() { return 512_KB; }
+    // Maximum size of a ROM file Stella opens.  OSystem::openROM() checks it
+    // before the cart type is known, so in this fork (16MB, for 4KP's 1MB
+    // and 3PO's 16MB; stock Stella has 512K) a 512K-16MB file of any type
+    // opens too.  The sizes in Bankswitch.cxx only filter the type list in
+    // the game info dialog.
+    static constexpr size_t maxSize() { return 16384_KB; }
 
   public:
     /**
