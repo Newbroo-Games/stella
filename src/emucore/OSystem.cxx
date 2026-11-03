@@ -637,7 +637,7 @@ bool OSystem::hasConsole() const
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-bool OSystem::createLauncher(string_view startdir)
+bool OSystem::createLauncher(string_view startdir, string_view message)
 {
   closeConsole();
 
@@ -645,6 +645,7 @@ bool OSystem::createLauncher(string_view startdir)
     mySound->pause(true);
 
   mySettings->setValue("tmpromdir", startdir);
+  mySettings->setValue("tmpmessage", message);
   bool status = false;
 
 #ifdef GUI_SUPPORT

@@ -47,9 +47,19 @@
   Keys without a corresponding value are assumed to be boolean, and set to true.
   Some keys are used only by the main function; these are placed in localOpts.
   The rest are needed globally, and are placed in globalOpts.
+  Any problem found is added to 'errors'.
 */
 void parseCommandLine(int ac, const char* const av[],
-    Settings::Options& globalOpts, Settings::Options& localOpts);
+    Settings::Options& globalOpts, Settings::Options& localOpts,
+    StringList& errors);
+
+/**
+  Checks the commandline options against the settings Stella knows, and
+  removes (and reports in 'errors') any it doesn't, such as a typo.
+  This must be done before the settings are loaded; see Settings::isKnown().
+*/
+void checkForUnknownOptions(const Settings& settings,
+    Settings::Options& options, StringList& errors);
 
 /**
   Checks the commandline for special settings that are used by various ports
@@ -82,7 +92,8 @@ void freeConsole();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void parseCommandLine(int ac, const char* const av[],
-    Settings::Options& globalOpts, Settings::Options& localOpts)
+    Settings::Options& globalOpts, Settings::Options& localOpts,
+    StringList& errors)
 {
   localOpts["ROMFILE"] = "";  // make sure we have an entry for this
 
@@ -115,7 +126,7 @@ void parseCommandLine(int ac, const char* const av[],
 
       if(++i >= ac)
       {
-        cerr << "Missing argument for '" << key << "'\n";
+        errors.push_back("Missing argument for '-" + key + "'");
         continue;
       }
       if(key == "basedir" || key == "break")
@@ -148,6 +159,23 @@ void checkForCustomBaseDir(Settings::Options& options)
     auto it = options.find("basedir");
     if(it != options.end())
       OSystem::overrideBaseDir(it->second.toString());
+  }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void checkForUnknownOptions(const Settings& settings,
+    Settings::Options& options, StringList& errors)
+{
+  // The options are kept sorted by name, so the errors come out sorted too
+  for(auto it = options.begin(); it != options.end(); )
+  {
+    if(settings.isKnown(it->first))
+      ++it;
+    else
+    {
+      errors.push_back("Unknown option '-" + it->first + "'");
+      it = options.erase(it);
+    }
   }
 }
 
@@ -236,7 +264,8 @@ int main(int ac, char* av[])
   // They are placed in different maps depending on whether they're used
   // locally or globally
   Settings::Options globalOpts, localOpts;
-  parseCommandLine(ac, av, globalOpts, localOpts);
+  StringList errors;
+  parseCommandLine(ac, av, globalOpts, localOpts, errors);
 
   // With '-rawstream -' stdout carries only the stream: move Stella's own
   // messages to stderr now, before the first one is logged
@@ -249,6 +278,7 @@ int main(int ac, char* av[])
 
   // Create the parent OSystem object and initialize settings
   theOSystem = MediaFactory::createOSystem();
+  checkForUnknownOptions(theOSystem->settings(), globalOpts, errors);
 
   // Create the full OSystem after the settings, since settings are
   // probably needed for defaults
@@ -258,6 +288,8 @@ int main(int ac, char* av[])
     Logger::error("ERROR: Couldn't create OSystem");
     return Cleanup();
   }
+  for(const auto& error: errors)
+    Logger::error("ERROR: " + error);
 
   // Check to see if the user requested info about a specific ROM,
   // or the list of internal ROMs
@@ -296,26 +328,24 @@ int main(int ac, char* av[])
   //   open the rom launcher in that directory.
   // If not, use the built-in ROM launcher.  In this case, we enter 'launcher'
   //   mode and let the main event loop take care of opening a new console/ROM.
+  // A bad commandline, or a ROM that can't be opened, also starts the
+  //   launcher, which shows what went wrong (the console is often hidden).
   const FSNode romnode(romfile);
-  if(romfile.empty() || romnode.isDirectory())
+  const bool romdir = !romfile.empty() && romnode.isDirectory();
+  bool consoleCreated = false;
+  if(errors.empty() && !romfile.empty() && !romnode.exists())
   {
-    Logger::debug("Attempting to use ROM launcher ...");
-    const bool launcherOpened = !romfile.empty() ?
-      theOSystem->createLauncher(romnode.getPath()) : theOSystem->createLauncher();
-    if(!launcherOpened)
-    {
-      Logger::debug("Launcher could not be started, showing usage");
-      Settings::usage();
-      return Cleanup();
-    }
+    errors.push_back("ROM file not found: '" + romfile + "'");
+    Logger::error("ERROR: " + errors.back());
   }
-  else
+  if(errors.empty() && !romfile.empty() && !romdir)
   {
     try
     {
       const string& result = theOSystem->createConsole(romnode);
-      if(result != EmptyString)
-        return Cleanup();
+      consoleCreated = result.empty();
+      if(!consoleCreated)
+        errors.push_back(result);
 
 #if 0
       TODO: Fix this to use functionality from OSystem::mainLoop
@@ -331,12 +361,12 @@ int main(int ac, char* av[])
     catch(const runtime_error& e)
     {
       Logger::error(e.what());
-      return Cleanup();
+      errors.emplace_back(e.what());
     }
 
 #ifdef DEBUGGER_SUPPORT
     // Set up any breakpoint that was on the command line
-    if(!localOpts["break"].toString().empty())
+    if(consoleCreated && !localOpts["break"].toString().empty())
     {
       Debugger& dbg = theOSystem->debugger();
       const uInt16 bp =
@@ -344,6 +374,20 @@ int main(int ac, char* av[])
       dbg.setBreakPoint(bp);
     }
 #endif
+  }
+  if(!consoleCreated)
+  {
+    Logger::debug("Attempting to use ROM launcher ...");
+    string message;
+    for(const auto& error: errors)
+      message += (message.empty() ? "" : "\n") + error;
+
+    if(!theOSystem->createLauncher(romdir ? romnode.getPath() : "", message))
+    {
+      Logger::debug("Launcher could not be started, showing usage");
+      Settings::usage();
+      return Cleanup();
+    }
   }
 
   // Start the main loop, and don't exit until the user issues a QUIT command

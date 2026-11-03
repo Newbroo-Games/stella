@@ -36,7 +36,10 @@ MessageBox::MessageBox(GuiObject* boss, const GUI::Font& font,
   addText(font, text);
 
   WidgetArray wid;
-  addOKCancelBGroup(wid, font, okText, cancelText, focusOKButton);
+  if(cancelText.empty())
+    addOKBGroup(wid, font, okText);
+  else
+    addOKCancelBGroup(wid, font, okText, cancelText, focusOKButton);
   addToFocusList(wid);
 }
 

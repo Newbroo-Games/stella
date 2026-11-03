@@ -522,6 +522,16 @@ void LauncherDialog::loadConfig()
   }
 
   myList->clearFlags(Widget::FLAG_WANTS_RAWDATA); // always reset this
+
+  // Show an error passed to OSystem::createLauncher() (eg. a bad commandline),
+  // once only
+  if(const string message = settings.getString("tmpmessage"); !message.empty())
+  {
+    settings.setValue("tmpmessage", "");
+    myConfirmMsg = make_unique<GUI::MessageBox>
+      (this, _font, message, _w, _h, 0, "OK", "", "Error");
+    myConfirmMsg->show();
+  }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -86,6 +86,16 @@ class Settings
     const Variant& value(string_view key) const;
 
     /**
+      Answer whether the specified key was registered in the c'tor.
+      Used to reject unknown options on the commandline, so it must be
+      called before load(), since setValue() adds any key it's given.
+
+      @param key  The key of the setting to lookup
+      @return  True if the key is a known setting
+    */
+    bool isKnown(string_view key) const;
+
+    /**
       Set the value associated with the specified key.
 
       @param key   The key of the setting

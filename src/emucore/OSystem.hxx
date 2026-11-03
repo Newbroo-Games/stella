@@ -400,10 +400,12 @@ class OSystem
 
       @param startdir  The directory to use when opening the launcher;
                        if blank, use 'romdir' setting.
+      @param message   An error to show once the launcher is open (such as
+                       a bad commandline); if blank, show none.
 
       @return  True on successful creation, otherwise false
     */
-    bool createLauncher(string_view startdir = "");
+    bool createLauncher(string_view startdir = "", string_view message = "");
 
     /**
       Answers whether the ROM launcher was actually successfully used

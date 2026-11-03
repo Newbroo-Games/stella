@@ -326,6 +326,18 @@ Settings::Settings()
   setTemporary("elf.dump", false);
   setTemporary("rawstream", "");
   setTemporary("inputscript", "");
+
+  // Commandline-only options, read where they're used (mostly as ROM
+  // properties in OSystem::openConsole); registered so that isKnown()
+  // accepts them
+  for(const auto* key: { "bs", "type", "startbank", "sp", "lc", "lq1", "lq2",
+                         "rc", "rq1", "rq2", "bc", "aq", "cp", "ma", "channels",
+                         "ld", "rd", "tv", "format", "vcenter", "pp", "ppblend",
+                         "pxcenter", "pycenter", "bezelname", "cheat",
+                         "holdjoy0", "holdjoy1", "seed" })
+    setTemporary(key, "");
+  for(const auto* key: { "debug", "holdselect", "holdreset" })
+    setTemporary(key, false);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -886,6 +898,12 @@ const Variant& Settings::value(string_view key) const
       return it->second;
   }
   return EmptyVariant;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bool Settings::isKnown(string_view key) const
+{
+  return myPermanentSettings.contains(key) || myTemporarySettings.contains(key);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
