@@ -337,9 +337,9 @@ class CartridgeEnhanced : public Cartridge
       @param address  The address to get the offset for
       @return  The calculated offset
     */
-    uInt16 ramAddressSegmentOffset(uInt16 address) const {
-      return static_cast<uInt16>(
-        (myCurrentSegOffset[((address & ROM_MASK) >> myBankShift) % myBankSegs] - mySize) 
+    uInt32 ramAddressSegmentOffset(uInt16 address) const {
+      return static_cast<uInt32>(
+        (myCurrentSegOffset[((address & ROM_MASK) >> myBankShift) % myBankSegs] - mySize)
         >> (myBankShift - myRamBankShift));
     }
 
