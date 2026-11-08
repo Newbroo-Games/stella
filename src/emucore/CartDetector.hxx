@@ -121,10 +121,6 @@ class CartDetector
     */
     static bool isProbably3PO(const ByteBuffer& image, size_t size);
 
-    /**
-      Returns true if the image is probably a 3PD bankswitching cartridge
-    */
-    static bool isProbably3PD(const ByteBuffer& image, size_t size);
 
     /**
       Returns true if the image is probably a 3F bankswitching cartridge

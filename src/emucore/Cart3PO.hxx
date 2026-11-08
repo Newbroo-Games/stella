@@ -28,8 +28,8 @@ class System;
 #endif
 
 /**
-  3PO: 3E+ with an outer bank register (Newbroo Games,
-  docs/3po.md).  "3E Plus, Outer bank".
+  3PO: 3E+ with an outer bank register (Newbroo Games).  "3E Plus,
+  Outer bank".
 
   Everything 3E+ does, plus one register: a write to $2F stores the outer
   bank number (0-255), and every later write to $3F puts ROM bank
